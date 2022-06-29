@@ -6,6 +6,9 @@ const { HttpCode } = require('./helper/constants')
 
 const app = express()
 
+const ordersRouter = require('./routes/ordersRouter')
+const productsRouter = require('./routes/productsRouter')
+
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 
@@ -17,6 +20,9 @@ app.use(
       optionsSuccessStatus: HttpCode.NO_CONTENT,
     }),
   )
+
+app.use('/api/orders', ordersRouter)
+app.use('/api/products', productsRouter)
 
 
   app.use((req, res) => {
