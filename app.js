@@ -1,8 +1,10 @@
 const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
+const boolParser = require('express-query-boolean')
 require('dotenv').config()
 const { HttpCode } = require('./helper/constants')
+const bodyParser = require('body-parser')
 
 const app = express()
 
@@ -12,6 +14,7 @@ const productsRouter = require('./routes/productsRouter')
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 
+
 app.use(
     cors({
       origin: '*',
@@ -20,7 +23,10 @@ app.use(
       optionsSuccessStatus: HttpCode.NO_CONTENT,
     }),
   )
-
+  app.use(boolParser())
+  app.use(bodyParser.urlencoded({ extended: false }))
+  app.use(bodyParser.json())
+  
 app.use('/api/orders', ordersRouter)
 app.use('/api/products', productsRouter)
 

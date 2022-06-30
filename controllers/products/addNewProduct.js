@@ -1,4 +1,5 @@
 const {Product} = require('../../model')
+const { nanoid } = require('nanoid')
 
 const addProduct = async (req, res, next) => {
     try {
@@ -8,7 +9,10 @@ const addProduct = async (req, res, next) => {
             throw new Error(`product with name ${productName} allredy exist`)
         }
         
-        const newProduct = {...req.body}
+        const newProduct = {
+            ...req.body,
+            id: nanoid(),
+        }
         const result = await Product.create(newProduct)
         res.status(201).json({
             status: 'success',
